@@ -1,0 +1,64 @@
+{
+  "name": "apollo-bug-repro",
+  "version": "1.0.0",
+  "description": "Reproduction case for Apollo Client unmounted component update issue",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@apollo/client": "^3.13.8",
+    "@apollo/graphql-testing-library": "^0.3.0",
+    "@graphql-tools/mock": "^9.0.23",
+    "@graphql-tools/schema": "^10.0.23",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.9.0",
+    "@types/node-fetch": "^3.0.3",
+    "@types/react": "^17.0.69",
+    "@types/react-dom": "^17.0.25",
+    "cross-fetch": "^4.1.0",
+    "graphql": "^16.11.0",
+    "graphql-tag": "^2.12.6",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "msw": "^2.8.6",
+    "node-fetch": "^3.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setup-tests.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.(ts|tsx|js)",
+      "<rootDir>/src/**/?(*.)(spec|test).(ts|tsx|js)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.(ts|tsx)",
+      "!src/**/*.d.ts"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(msw|@mswjs|@apollo/graphql-testing-library)/)"
+    ]
+  },
+  "packageManager": "yarn@3.8.7+sha512.bbe7e310ff7fd20dc63b111110f96fe18192234bb0d4f10441fa6b85d2b644c8923db8fbe6d7886257ace948440ab1f83325ad02af457a1806cdc97f03d2508e"
+}
