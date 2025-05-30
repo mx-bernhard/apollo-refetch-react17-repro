@@ -16,45 +16,42 @@ const GET_ALL_USERS = gql`
 `;
 
 describe("Apollo Client useSyncExternalStore Polyfill Bug Reproduction", () => {
-  it("should reproduce the Apollo Client useSyncExternalStore polyfill issue", async () => {
-    const user = userEvent.setup();
+  it.each([0, 1, 2, 3, 4, 5, 6, 7].flatMap(() => [0, 1, 2, 3, 4, 5, 6, 7]))(
+    "should reproduce the Apollo Client useSyncExternalStore polyfill issue",
+    async () => {
+      const user = userEvent.setup();
 
-    const mocks = Array.from({ length: 8 }, () => ({
-      request: { query: GET_ALL_USERS },
-      result: {
-        data: {
-          getAllUsers: [
-            { id: "user-1", name: "User 1", email: "user1@example.com" },
-            { id: "user-2", name: "User 2", email: "user2@example.com" },
-          ],
+      const mocks = Array.from({ length: 8 }, () => ({
+        request: { query: GET_ALL_USERS },
+        result: {
+          data: {
+            getAllUsers: [
+              { id: "user-1", name: "User 1", email: "user1@example.com" },
+              { id: "user-2", name: "User 2", email: "user2@example.com" },
+            ],
+          },
         },
-      },
-      delay: 50,
-    }));
+        delay: 50,
+      }));
 
-    const { unmount } = render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <UserList />
-      </MockedProvider>
-    );
+      const { unmount } = render(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <UserList />
+        </MockedProvider>
+      );
 
-    await waitFor(() => {
-      expect(screen.getByTestId("user-list")).toBeInTheDocument();
-    });
+      await waitFor(() => {
+        expect(screen.getByTestId("user-list")).toBeInTheDocument();
+      });
 
-    const refreshButton = screen.getByTestId("refresh-button");
-    await user.click(refreshButton);
+      await act(async () => {
+        const refreshButton = screen.getByTestId("refresh-button");
+        await user.click(refreshButton);
 
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 30));
-    });
+        unmount();
+      });
 
-    unmount();
-
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 200));
-    });
-
-    expect(true).toBe(true);
-  });
+      expect(true).toBe(true);
+    }
+  );
 });
